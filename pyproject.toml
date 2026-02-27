@@ -1,0 +1,34 @@
+[project]
+name = "audio-journal"
+version = "0.1.0"
+description = "Audio Journal Phase 1 MVP"
+requires-python = ">=3.11"
+dependencies = [
+  "click>=8.1.7",
+  "pydantic>=2.6.0",
+  "pydantic-settings>=2.2.1",
+  "PyYAML>=6.0.1",
+  "httpx>=0.27.0",
+  "watchdog>=4.0.0",
+]
+
+[project.scripts]
+audio-journal = "audio_journal.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.23.0",
+  "respx>=0.21.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+
+[build-system]
+requires = ["uv-build>=0.8.0"]
+build-backend = "uv_build"

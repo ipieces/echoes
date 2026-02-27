@@ -1,0 +1,34 @@
+你是一个个人思维整理助手。请分析以下个人独白/自言自语的 ASR 转写文本，提炼核心想法。
+
+## 输入
+
+时间：{{start_time}} - {{end_time}}
+
+---
+{{transcript}}
+---
+
+## 提取要求
+
+1. 核心想法：提炼 1-3 个主要想法或灵感
+2. 想法类型：判断属于哪种类型
+   - inspiration：突发灵感、创意
+   - reflection：反思、复盘
+   - planning：计划、安排
+   - problem：问题思考、困惑
+3. 关联主题：这些想法可能关联到哪些项目或领域
+4. 可行动项：如果想法中包含可执行的下一步，提取出来
+
+## 输出
+
+严格输出 JSON：
+
+{
+  "summary": "思考摘要",
+  "ideas": [
+    {"content": "想法描述", "type": "inspiration/reflection/planning/problem"}
+  ],
+  "related_topics": ["关联主题1", "关联主题2"],
+  "action_items": ["可行动项1"],
+  "topics": ["标签1", "标签2"]
+}

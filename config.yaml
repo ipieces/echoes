@@ -1,0 +1,81 @@
+# ASR 配置
+asr:
+  engine: mock
+  model: paraformer-zh
+  vad_model: fsmn-vad
+  punc_model: ct-punc
+  spk_model: cam++
+  device: mps
+  batch_size: 4
+  language: zh
+
+# 音频预切分配置
+chunker:
+  min_silence_gap: 30
+  silence_rms_threshold: 200.0
+  max_chunk_duration: 14400
+  min_chunk_duration: 60
+  parallel: true
+  max_workers: 4
+
+# 分段配置
+segmenter:
+  min_silence_gap: 30
+  max_segment_duration: 1800
+  min_segment_duration: 10
+
+# LLM 配置
+llm:
+  provider: deepseek  # openai | deepseek | zai
+  model: deepseek-chat
+  api_key_env: DEEPSEEK_API_KEY
+  # base_url: https://api.deepseek.com/v1  # 可选：不填使用内置默认值；zai 默认 https://open.bigmodel.cn/api/paas/v4/
+  temperature: 0.3
+  max_tokens: 4096
+  overrides:
+    classifier:
+      provider: deepseek
+      model: deepseek-chat
+    analyzer:
+      provider: claude
+      model: claude-sonnet-4-5-20250514
+      api_key_env: ANTHROPIC_API_KEY
+
+  # z.ai（智谱 AI）示例：
+  # provider: zai
+  # model: glm-4-flash
+  # api_key_env: ZHIPUAI_API_KEY
+  # base_url: https://open.bigmodel.cn/api/paas/v4/  # 可选：不填走默认（注意是 /v4 不是 /v1）
+
+# 场景配置
+scenes:
+  - meeting
+  - business
+  - idea
+  - learning
+  - phone
+  - chat
+
+# 归档配置
+archive:
+  default_target: local
+  local:
+    base_dir: ./data/archive
+  obsidian:
+    vault_path: /path/to/obsidian/vault
+    base_dir: AudioJournal
+
+# 路径配置
+paths:
+  inbox: ./data/inbox
+  processing: ./data/processing
+  transcripts: ./data/transcripts
+  analysis: ./data/analysis
+  prompts: ./prompts
+
+# 文件监听配置
+watcher:
+  watch_dir: ./data/inbox
+  patterns: ["*.wav"]
+  stable_seconds: 5
+  daemon: false
