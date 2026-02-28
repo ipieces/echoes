@@ -1,0 +1,11 @@
+[
+  {"speaker": "SPEAKER_00", "text": "好，我们开始今天的项目进度会议。张工，你先说一下后端的情况。", "start_time": 0.0, "end_time": 4.5},
+  {"speaker": "SPEAKER_01", "text": "好的，王总。后端这边，用户认证模块已经完成了，目前正在做数据库优化。预计下周三可以完成性能测试。", "start_time": 5.0, "end_time": 11.0},
+  {"speaker": "SPEAKER_00", "text": "嗯，不错。李工，前端那边呢？", "start_time": 11.5, "end_time": 13.5},
+  {"speaker": "SPEAKER_02", "text": "前端进度稍微有点延迟，主要是设计稿改了两版。不过核心页面已经完成了百分之八十，下周一应该能交付第一版。", "start_time": 14.0, "end_time": 20.0},
+  {"speaker": "SPEAKER_00", "text": "好的，那我们需要协调一下接口联调的时间。张工，你看下周四开始联调可以吗？", "start_time": 20.5, "end_time": 25.0},
+  {"speaker": "SPEAKER_01", "text": "没问题，我这边提前准备好接口文档和测试环境。", "start_time": 25.5, "end_time": 28.0},
+  {"speaker": "SPEAKER_00", "text": "那就这样定了。还有一个事情，客户那边提了一个新需求，要加一个数据导出功能。李工你评估一下工作量，明天给我反馈。", "start_time": 28.5, "end_time": 35.0},
+  {"speaker": "SPEAKER_02", "text": "收到，我今天下午就看一下。", "start_time": 35.5, "end_time": 37.5},
+  {"speaker": "SPEAKER_00", "text": "好，今天的会议就到这里，大家辛苦了。", "start_time": 38.0, "end_time": 40.0}
+]

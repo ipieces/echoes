@@ -1,0 +1,18 @@
+[
+  {"speaker": "SPEAKER_00", "text": "喂，你好，请问是李先生吗？", "start_time": 0.0, "end_time": 2.5},
+  {"speaker": "SPEAKER_01", "text": "是的，我是。你是哪位？", "start_time": 3.0, "end_time": 4.5},
+  {"speaker": "SPEAKER_00", "text": "我是顺丰快递的，您有一个包裹到了，现在方便收吗？", "start_time": 5.0, "end_time": 8.0},
+  {"speaker": "SPEAKER_01", "text": "哦，好的，我现在在公司，你能送到公司地址吗？", "start_time": 8.5, "end_time": 11.0},
+  {"speaker": "SPEAKER_00", "text": "可以的，请问具体地址是？", "start_time": 11.5, "end_time": 13.0},
+  {"speaker": "SPEAKER_01", "text": "朝阳区建国路88号，现代城B座12层。", "start_time": 13.5, "end_time": 16.0},
+  {"speaker": "SPEAKER_00", "text": "好的，我大概半小时后到，到了给您打电话。", "start_time": 16.5, "end_time": 19.0},
+  {"speaker": "SPEAKER_01", "text": "行，谢谢。", "start_time": 19.5, "end_time": 20.5},
+  {"speaker": "SPEAKER_00", "text": "不客气。", "start_time": 21.0, "end_time": 21.5},
+  {"speaker": "SPEAKER_01", "text": "对了，等一下，我还想问一下，我上周寄的那个快递，现在到哪里了？", "start_time": 22.0, "end_time": 26.0},
+  {"speaker": "SPEAKER_00", "text": "您稍等，我查一下单号。请问单号是多少？", "start_time": 26.5, "end_time": 29.0},
+  {"speaker": "SPEAKER_01", "text": "是SF1234567890。", "start_time": 29.5, "end_time": 31.0},
+  {"speaker": "SPEAKER_00", "text": "好的，我查到了，您的快递已经到达目的地，今天下午会派送。", "start_time": 31.5, "end_time": 35.0},
+  {"speaker": "SPEAKER_01", "text": "太好了，谢谢你。", "start_time": 35.5, "end_time": 36.5},
+  {"speaker": "SPEAKER_00", "text": "不客气，那我半小时后见。", "start_time": 37.0, "end_time": 38.5},
+  {"speaker": "SPEAKER_01", "text": "好的，再见。", "start_time": 39.0, "end_time": 40.0}
+]
