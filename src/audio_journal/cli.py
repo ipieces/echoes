@@ -7,6 +7,7 @@ from pathlib import Path
 
 import click
 
+from audio_journal.batch import DailyBatchProcessor, collect_files_by_date
 from audio_journal.config import AppConfig, load_config
 from audio_journal.models.schemas import SceneType
 from audio_journal.pipeline import Pipeline
@@ -137,6 +138,77 @@ def show(obj: dict, entry_id: str) -> None:
         click.echo(md_path.read_text(encoding="utf-8"))
     else:
         click.echo("(归档文件不存在)")
+
+
+@main.command()
+@click.option(
+    "--date",
+    "target_date",
+    type=str,
+    default=None,
+    help="处理指定日期（YYYY-MM-DD），默认处理昨天",
+)
+@click.pass_obj
+def batch(obj: dict, target_date: str | None) -> None:
+    """批量处理指定日期的所有录音。"""
+    from datetime import timedelta
+
+    cfg: AppConfig = obj["config"]
+
+    # 默认处理昨天
+    if target_date is None:
+        d = date.today() - timedelta(days=1)
+    else:
+        try:
+            d = date.fromisoformat(target_date)
+        except ValueError:
+            raise click.BadParameter(f"日期格式错误: {target_date}，应为 YYYY-MM-DD")
+
+    # 检查是否有文件
+    all_groups = collect_files_by_date(cfg.paths.inbox)
+    files = all_groups.get(d, [])
+
+    if not files:
+        click.echo(f"📭 {d.isoformat()} 没有找到录音文件")
+        return
+
+    click.echo(f"🎙️  发现 {len(files)} 个录音文件 ({d.isoformat()})")
+    for f in files:
+        click.echo(f"  - {f.name}")
+
+    # 处理
+    processor = DailyBatchProcessor(cfg)
+    click.echo(f"\n⏳ 合并音频并处理...")
+    report = asyncio.run(processor.process_date(d))
+
+    click.echo(f"\n✅ 处理完成")
+    click.echo(f"  文件数: {report.file_count}")
+    click.echo(f"  片段数: {report.segment_count}")
+    if report.scene_distribution:
+        click.echo(f"  场景分布: {report.scene_distribution}")
+
+
+@main.command(name="batch-all")
+@click.pass_obj
+def batch_all(obj: dict) -> None:
+    """处理 inbox 中所有未处理的日期。"""
+    cfg: AppConfig = obj["config"]
+    all_groups = collect_files_by_date(cfg.paths.inbox)
+
+    if not all_groups:
+        click.echo("📭 inbox 为空")
+        return
+
+    click.echo(f"📅 发现 {len(all_groups)} 个日期待处理\n")
+
+    processor = DailyBatchProcessor(cfg)
+    for d in sorted(all_groups.keys()):
+        files = all_groups[d]
+        click.echo(f"处理 {d.isoformat()} ({len(files)} 个文件)...")
+        report = asyncio.run(processor.process_date(d))
+        click.echo(f"  ✅ {report.segment_count} 个片段")
+
+    click.echo(f"\n🎉 全部完成")
 
 
 if __name__ == "__main__":

@@ -100,6 +100,12 @@ class WatcherConfig(BaseModel):
     daemon: bool = False
 
 
+class BatchConfig(BaseModel):
+    """日级批处理配置。"""
+
+    processed_dir: Path = Path("./data/processed")
+
+
 class AppConfig(BaseModel):
     asr: ASRConfig = Field(default_factory=ASRConfig)
     chunker: ChunkerConfig = Field(default_factory=ChunkerConfig)
@@ -113,6 +119,7 @@ class AppConfig(BaseModel):
     archive: ArchiveConfig = Field(default_factory=ArchiveConfig)
     paths: PathsConfig = Field(default_factory=PathsConfig)
     watcher: WatcherConfig = Field(default_factory=WatcherConfig)
+    batch: BatchConfig = Field(default_factory=BatchConfig)
 
     def resolve_paths(self, base_dir: Path) -> "AppConfig":
         """将配置中的相对路径基于 base_dir 展开为绝对路径。"""
@@ -137,6 +144,9 @@ class AppConfig(BaseModel):
         data["archive"]["obsidian"]["vault_path"] = _abs(
             Path(data["archive"]["obsidian"]["vault_path"])
         )
+
+        # batch
+        data["batch"]["processed_dir"] = _abs(Path(data["batch"]["processed_dir"]))
 
         return AppConfig.model_validate(data)
 

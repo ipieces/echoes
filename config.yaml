@@ -79,3 +79,7 @@ watcher:
   patterns: ["*.wav"]
   stable_seconds: 5
   daemon: false
+
+# 批处理配置
+batch:
+  processed_dir: ./data/processed
