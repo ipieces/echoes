@@ -21,9 +21,9 @@ chunker:
 
 # 分段配置
 segmenter:
-  min_silence_gap: 30
-  max_segment_duration: 1800
-  min_segment_duration: 10
+  min_silence_gap: 300  # 秒，静音分段阈值（5分钟，适应会议茶歇场景）
+  max_segment_duration: 1800  # 秒，单段最长30分钟
+  min_segment_duration: 10  # 秒，最短有效段
 
 # LLM 配置
 llm:
