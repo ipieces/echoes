@@ -18,6 +18,7 @@ class ASRConfig(BaseModel):
     device: str = "mps"
     batch_size: int = 4
     language: str = "zh"
+    model_dir: Path = Path("./models")  # 模型存储目录
 
 
 class ChunkerConfig(BaseModel):
@@ -128,6 +129,9 @@ class AppConfig(BaseModel):
             return p if p.is_absolute() else (base_dir / p).resolve()
 
         data: dict[str, Any] = self.model_dump()
+
+        # asr
+        data["asr"]["model_dir"] = _abs(Path(data["asr"]["model_dir"]))
 
         # paths
         data["paths"]["inbox"] = _abs(Path(data["paths"]["inbox"]))

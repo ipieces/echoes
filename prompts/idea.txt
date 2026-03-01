@@ -1,8 +1,9 @@
-你是一个个人思维整理助手。请分析以下个人独白/自言自语的 ASR 转写文本，提炼核心想法。
+你是一个专业的想法记录分析师。请分析以下想法记录的 ASR 转写文本，提取结构化信息。
 
 ## 输入
 
-时间：{{start_time}} - {{end_time}}
+记录时间：{{start_time}} - {{end_time}}
+说话人：{{speakers}}
 
 ---
 {{transcript}}
@@ -10,25 +11,36 @@
 
 ## 提取要求
 
-1. 核心想法：提炼 1-3 个主要想法或灵感
-2. 想法类型：判断属于哪种类型
-   - inspiration：突发灵感、创意
-   - reflection：反思、复盘
-   - planning：计划、安排
-   - problem：问题思考、困惑
-3. 关联主题：这些想法可能关联到哪些项目或领域
-4. 可行动项：如果想法中包含可执行的下一步，提取出来
+1. 核心想法（core_idea）：用 1-2 句话概括主要想法
+2. 想法类型（idea_type）：
+   - inspiration: 灵感闪现
+   - reflection: 反思总结
+   - plan: 计划构思
+3. 相关话题（related_topics）：关联的话题或领域标签（3-5 个）
+4. 可行性（feasibility）：
+   - high: 高可行性，可以立即行动
+   - medium: 中等可行性，需要进一步验证
+   - low: 低可行性，需要大量准备
+   - unknown: 无法判断
+5. 下一步行动（next_steps）：基于这个想法可以采取的具体行动（如有）
+6. 话题标签：3-5 个关键词标签
+
+## 注意事项
+
+- ASR 转写可能有错别字，请根据上下文理解原意
+- 核心想法需要简洁明了
+- 可行性评估需要客观，基于转写内容中的信息
+- 下一步行动需要具体可执行
 
 ## 输出
 
 严格输出 JSON：
 
 {
-  "summary": "思考摘要",
-  "ideas": [
-    {"content": "想法描述", "type": "inspiration/reflection/planning/problem"}
-  ],
-  "related_topics": ["关联主题1", "关联主题2"],
-  "action_items": ["可行动项1"],
+  "core_idea": "核心想法描述",
+  "idea_type": "inspiration|reflection|plan",
+  "related_topics": ["话题1", "话题2"],
+  "feasibility": "high|medium|low|unknown",
+  "next_steps": ["行动1", "行动2"],
   "topics": ["标签1", "标签2"]
 }

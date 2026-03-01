@@ -10,6 +10,8 @@ dependencies = [
   "PyYAML>=6.0.1",
   "httpx>=0.27.0",
   "watchdog>=4.0.0",
+  "funasr",
+  "modelscope",
 ]
 
 [project.scripts]

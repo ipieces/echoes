@@ -91,9 +91,19 @@ def _default_asr(config: AppConfig) -> ASREngine:
         if not fixture.exists():
             raise RuntimeError("使用 mock ASR 时需要设置 AUDIO_JOURNAL_MOCK_ASR_FIXTURE")
         return MockASREngine(fixture)
-    raise NotImplementedError(
-        f"ASR engine '{config.asr.engine}' 未实现（当前仅支持 mock）。请在 config.yaml 设置 asr.engine: mock"
-    )
+    elif config.asr.engine == "funasr":
+        # 延迟导入，避免在 mock 模式下加载 FunASR 依赖
+        try:
+            from audio_journal.asr.funasr import FunASREngine
+        except ImportError as e:
+            raise RuntimeError(
+                "FunASR 引擎需要额外依赖。请运行: pip install funasr modelscope"
+            ) from e
+        return FunASREngine(config.asr, model_dir=config.asr.model_dir)
+    else:
+        raise NotImplementedError(
+            f"ASR engine '{config.asr.engine}' 未实现。支持的引擎: mock, funasr"
+        )
 
 
 def _default_classifier(config: AppConfig) -> SceneClassifier:

@@ -8,6 +8,7 @@ asr:
   device: mps
   batch_size: 4
   language: zh
+  model_dir: ./models
 
 # 音频预切分配置
 chunker:
