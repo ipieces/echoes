@@ -46,7 +46,7 @@ htmlcov/
 
 # Project specific
 data/
-models/
+/models/
 *.wav
 *.mp3
 *.m4a
