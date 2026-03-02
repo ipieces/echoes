@@ -50,6 +50,24 @@ class ClassifiedSegment(Segment):
     value_tags: list[str] = Field(default_factory=list)
 
 
+class MergedSegment(BaseModel):
+    """合并后的 Segment，保留原始 Segment 信息以便追溯。"""
+
+    id: str
+    scene: SceneType
+    utterances: list[Utterance]
+    start_time: float
+    end_time: float
+    duration: float
+    source_file: str
+    confidence: float
+    value_tags: list[str] = Field(default_factory=list)
+
+    # 合并元数据
+    original_segment_ids: list[str]
+    gap_durations: list[float]
+
+
 class ActionItem(BaseModel):
     task: str
     owner: str

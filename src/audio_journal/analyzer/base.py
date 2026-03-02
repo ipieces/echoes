@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from audio_journal.llm.base import LLMProvider
-from audio_journal.models.schemas import ClassifiedSegment, Utterance
+from audio_journal.models.schemas import ClassifiedSegment, MergedSegment, Utterance
 
 
 class BaseAnalyzer(ABC):
@@ -16,7 +16,7 @@ class BaseAnalyzer(ABC):
         self._prompt_template = self.prompt_path.read_text(encoding="utf-8")
 
     @abstractmethod
-    async def analyze(self, segment: ClassifiedSegment):
+    async def analyze(self, segment: ClassifiedSegment | MergedSegment):
         raise NotImplementedError
 
     def _render_prompt(self, *, transcript: str, start_time: str, end_time: str, speakers: str) -> str:

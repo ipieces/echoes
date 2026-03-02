@@ -84,3 +84,13 @@ watcher:
 # 批处理配置
 batch:
   processed_dir: ./data/processed
+
+# Segment 合并配置
+merger:
+  enabled: true
+  max_gap_between_segments: 600  # 秒，相邻 Segment 最大间隔（10分钟）
+  max_merged_duration: 7200  # 秒，合并后最长时长（2小时）
+  mergeable_scenes:
+    - meeting
+    - learning
+    - business

@@ -107,6 +107,17 @@ class BatchConfig(BaseModel):
     processed_dir: Path = Path("./data/processed")
 
 
+class MergerConfig(BaseModel):
+    """Segment 合并器配置。"""
+
+    enabled: bool = True
+    max_gap_between_segments: float = 600.0  # 秒，最大允许间隔（10分钟）
+    max_merged_duration: float = 7200.0  # 秒，合并后最长时长（2小时）
+    mergeable_scenes: list[str] = Field(
+        default_factory=lambda: ["meeting", "learning", "business"]
+    )
+
+
 class AppConfig(BaseModel):
     asr: ASRConfig = Field(default_factory=ASRConfig)
     chunker: ChunkerConfig = Field(default_factory=ChunkerConfig)
@@ -121,6 +132,7 @@ class AppConfig(BaseModel):
     paths: PathsConfig = Field(default_factory=PathsConfig)
     watcher: WatcherConfig = Field(default_factory=WatcherConfig)
     batch: BatchConfig = Field(default_factory=BatchConfig)
+    merger: MergerConfig = Field(default_factory=MergerConfig)
 
     def resolve_paths(self, base_dir: Path) -> "AppConfig":
         """将配置中的相对路径基于 base_dir 展开为绝对路径。"""

@@ -13,14 +13,20 @@ from audio_journal.chunker.vad_chunker import VADChunker
 from audio_journal.classifier.scene import SceneClassifier
 from audio_journal.config import AppConfig
 from audio_journal.llm.base import LLMFactory
-from audio_journal.models.schemas import AnalysisResult, ClassifiedSegment, SceneType
+from audio_journal.merger.segment_merger import SegmentMerger
+from audio_journal.models.schemas import (
+    AnalysisResult,
+    ClassifiedSegment,
+    MergedSegment,
+    SceneType,
+)
 from audio_journal.segmenter.silence import SilenceSegmenter
 
 
 class PassthroughAnalyzer:
     """不调用 LLM，仅保留 transcript + scene。"""
 
-    async def analyze(self, segment: ClassifiedSegment) -> AnalysisResult:
+    async def analyze(self, segment: ClassifiedSegment | MergedSegment) -> AnalysisResult:
         return AnalysisResult(
             segment_id=segment.id,
             scene=segment.scene,
@@ -43,6 +49,7 @@ class Pipeline:
         asr: Optional[ASREngine] = None,
         segmenter: Optional[SilenceSegmenter] = None,
         classifier: Optional[SceneClassifier] = None,
+        merger: Optional[SegmentMerger] = None,
         meeting_analyzer: Optional[MeetingAnalyzer] = None,
         archiver: Optional[LocalArchiver] = None,
     ) -> None:
@@ -51,6 +58,7 @@ class Pipeline:
         self.asr = asr or _default_asr(config)
         self.segmenter = segmenter or SilenceSegmenter(config.segmenter)
         self.classifier = classifier or _default_classifier(config)
+        self.merger = merger or SegmentMerger(config.merger)
         self.meeting_analyzer = meeting_analyzer or _default_meeting_analyzer(config)
         self.passthrough_analyzer = PassthroughAnalyzer()
         self.archiver = archiver or LocalArchiver(base_dir=config.archive.local.base_dir)
@@ -73,7 +81,13 @@ class Pipeline:
             for seg in segments:
                 classified.append(await self.classifier.classify(seg))
 
-            for seg in classified:
+            # 合并 (新增)
+            if self.config.merger.enabled:
+                merged_segments = self.merger.merge(classified)
+            else:
+                merged_segments = classified
+
+            for seg in merged_segments:
                 if seg.scene == SceneType.MEETING:
                     res = await self.meeting_analyzer.analyze(seg)
                 else:

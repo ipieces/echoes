@@ -4,13 +4,13 @@ from typing import Any
 
 from audio_journal.analyzer.base import BaseAnalyzer, render_transcript
 from audio_journal.llm.base import parse_json_strict
-from audio_journal.models.schemas import AnalysisResult, ClassifiedSegment, SceneType
+from audio_journal.models.schemas import AnalysisResult, ClassifiedSegment, MergedSegment, SceneType
 
 
 class BusinessAnalyzer(BaseAnalyzer):
     """商务对话分析器。"""
 
-    async def analyze(self, segment: ClassifiedSegment) -> AnalysisResult:
+    async def analyze(self, segment: ClassifiedSegment | MergedSegment) -> AnalysisResult:
         if segment.scene != SceneType.BUSINESS:
             raise ValueError(f"BusinessAnalyzer 仅支持 business，当前: {segment.scene}")
 
