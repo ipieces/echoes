@@ -51,6 +51,10 @@ data/
 *.mp3
 *.m4a
 
+# Local configuration files (keep config.yaml as template)
+config.*.yaml
+config.*.yml
+
 # Logs
 *.log
 

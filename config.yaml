@@ -1,10 +1,11 @@
 # ASR 配置
 asr:
   engine: mock
-  model: paraformer-zh
-  vad_model: fsmn-vad
-  punc_model: ct-punc
-  spk_model: cam++
+  # 注意：使用支持时间戳的模型（iic/ 命名空间）
+  model: iic/speech_paraformer-large-vad-punc_asr_nat-zh-cn-16k-common-vocab8404-pytorch
+  vad_model: iic/speech_fsmn_vad_zh-cn-16k-common-pytorch
+  punc_model: iic/punc_ct-transformer_zh-cn-common-vad_realtime-vocab272727
+  spk_model: iic/speech_campplus_sv_zh-cn_16k-common
   device: mps
   batch_size: 4
   language: zh
@@ -44,9 +45,9 @@ llm:
 
   # z.ai（智谱 AI）示例：
   # provider: zai
-  # model: glm-4-flash
+  # model: GLM-4.7
   # api_key_env: ZHIPUAI_API_KEY
-  # base_url: https://open.bigmodel.cn/api/paas/v4/  # 可选：不填走默认（注意是 /v4 不是 /v1）
+  # base_url: https://api.z.ai/api/paas/v4  # 可选：不填走默认（注意是 /v4 不是 /v1）
 
 # 场景配置
 scenes:

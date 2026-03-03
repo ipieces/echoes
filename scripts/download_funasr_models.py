@@ -20,12 +20,15 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def download_model(model_id: str, output_dir: Path) -> None:
+def download_model(model_id: str, cache_dir: Path) -> str:
     """从 ModelScope 下载模型。
 
     Args:
-        model_id: ModelScope 模型 ID
-        output_dir: 输出目录
+        model_id: ModelScope 模型 ID (如 damo/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-pytorch)
+        cache_dir: 缓存目录
+
+    Returns:
+        实际下载的模型路径
     """
     try:
         from modelscope.hub.snapshot_download import snapshot_download
@@ -35,15 +38,16 @@ def download_model(model_id: str, output_dir: Path) -> None:
         ) from e
 
     logger.info(f"下载模型: {model_id}")
-    logger.info(f"  目标目录: {output_dir}")
+    logger.info(f"  缓存目录: {cache_dir}")
 
-    # 下载模型
-    cache_dir = snapshot_download(
+    # 下载模型（ModelScope 会自动使用 model_id 作为子目录）
+    model_path = snapshot_download(
         model_id=model_id,
-        cache_dir=str(output_dir.parent),
+        cache_dir=str(cache_dir),
     )
 
-    logger.info(f"  下载完成: {cache_dir}")
+    logger.info(f"  下载完成: {model_path}")
+    return model_path
 
 
 def main() -> None:
@@ -83,18 +87,20 @@ def main() -> None:
 
     # 下载模型
     for model_name, model_id in models_to_download:
-        output_path = args.output_dir / model_name
-        if output_path.exists():
-            logger.info(f"模型已存在，跳过: {model_name}")
+        # 检查模型是否已存在（使用完整的模型 ID 路径）
+        model_path = args.output_dir / model_id
+        if model_path.exists():
+            logger.info(f"模型已存在，跳过: {model_name} ({model_path})")
             continue
 
         try:
-            download_model(model_id, output_path)
+            actual_path = download_model(model_id, args.output_dir)
+            logger.info(f"✅ {model_name} 下载成功: {actual_path}")
         except Exception as e:
-            logger.error(f"下载失败: {model_name} - {e}")
+            logger.error(f"❌ 下载失败: {model_name} - {e}")
             continue
 
-    logger.info("所有模型下载完成")
+    logger.info("\n🎉 所有模型下载完成")
 
 
 if __name__ == "__main__":

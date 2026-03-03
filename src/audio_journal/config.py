@@ -19,6 +19,7 @@ class ASRConfig(BaseModel):
     batch_size: int = 4
     language: str = "zh"
     model_dir: Path = Path("./models")  # 模型存储目录
+    enable_speaker_diarization: bool = True  # 是否启用说话人分离（可能在某些音频上失败）
 
 
 class ChunkerConfig(BaseModel):

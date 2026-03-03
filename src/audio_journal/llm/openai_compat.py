@@ -14,8 +14,8 @@ def _default_base_url(provider: str) -> str:
     if provider == "deepseek":
         return "https://api.deepseek.com/v1"
     if provider == "zai":
-        # 智谱 AI（z.ai / BigModel）为 OpenAI Chat Completions 兼容形态，但 base_url 不是 /v1。
-        return "https://open.bigmodel.cn/api/paas/v4"
+        # 智谱 AI（z.ai）为 OpenAI Chat Completions 兼容形态，但 base_url 不是 /v1。
+        return "https://api.z.ai/api/paas/v4"
     raise NotImplementedError(provider)
 
 
